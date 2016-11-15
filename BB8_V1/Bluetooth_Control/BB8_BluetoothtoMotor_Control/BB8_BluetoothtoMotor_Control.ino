@@ -16,7 +16,7 @@
 
 //#define DEBUG
 //#define DEBUG_MOTORCONTROL
-#define DEBUG_HEAD
+//#define DEBUG_HEAD
 
 //Constant Variables ----------------------------------------------------------------------------------
 const int joystick_xPin = 4, joystick_yPin = 5; //Joystick pins
@@ -27,6 +27,7 @@ const int neutral_x = 504, neutral_y = 490; //Neutral values for x_joystick and 
 // Global Variables -----------------------------------------------------------------------------------
 int joystick_x = 0, joystick_y = 0, joystick_btn = 0; //Values to be read in from the joystick
 char headDir = 'r'; //Changes between 'r' and 'l' for right and left
+
 // Objects --------------------------------------------------------------------------------------------
 SoftwareSerial bt_serial(2, 3); // RX | TX
 Servo head;

@@ -13,7 +13,7 @@
 
 #include <SoftwareSerial.h>
 
-#define DEBUG
+//#define DEBUG
 
 //Constant Variables -------------------------------------------------------------------------------------------------------------------------------------------
 const int joystick_xPin = 3, joystick_yPin = 4, joystick_btnPin = 4;
