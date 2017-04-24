@@ -26,7 +26,7 @@ const int neutral_x = 504, neutral_y = 490; //Neutral values for x_joystick and 
 
 // Global Variables -----------------------------------------------------------------------------------
 int joystick_x = 0, joystick_y = 0, joystick_btn = 0; //Values to be read in from the joystick
-char headDir = 'r'; //Changes between 'r' and 'l' for right and left
+bool rotatingHead = false, rotation = true; //True for right, false for left
 
 // Objects --------------------------------------------------------------------------------------------
 SoftwareSerial bt_serial(2, 3); // RX | TX
@@ -46,6 +46,7 @@ void setup()
     bt_serial.begin(9600);
     Serial.println("bt_serial started at 9600");
 
+    //Initialilze servo
     head.attach(servoPin);
 }
 
@@ -57,10 +58,13 @@ void loop()
   //Assign joystick values to the motor signals
   motorControl();
 
+  rotateHead();
   
   //Rotate the head if the joystick button is pressed
-  if(joystick_btn)
-    rotateHead();
+  /*if(joystick_btn)
+    rotatingHead = true;
+  else
+    rotatingHead = false;*/
 
   #ifdef DEBUG_HEAD
     Serial.print("Head Turn: ");
@@ -179,30 +183,47 @@ void motorControl()
 void rotateHead()
 {
   int headPos = head.read();
-  
-  if(headDir == 'r')
+
+  if(rotatingHead)
   {
-    if(headPos<180)
+    if(rotation)
     {
+      if(headPos < 120)
+      {
+        head.write(headPos+10);
+        delay(10);
+      }
+      else
+        rotation = false;
+    }
+    else
+    {
+      if(headPos > 60)
+      {
+        head.write(headPos+10);
+        delay(10);
+      }
+      else
+        rotation = true;
+    }
+  }
+}
+
+void initializeServo()
+{
+  int headPos;
+
+  do
+  {
+    headPos = head.read();
+    
+    if(headPos < 90)
       head.write(headPos+1);
-      delay(10);
-    }
-      
-
-    if(headPos == 180)
-      headDir = 'l';
-  }
-  else if(headDir == 'l')
-  {
-    if(headPos>0)
-    {
+    else if(headPos > 90)
       head.write(headPos-1);
-      delay(10);
-    }
-
-    if(headPos == 0)
-      headDir = 'r';
-  }
+      
+    delay(10);
+  } while(headPos != 90);
 }
 
 //Reads the bt_serial input and parses the included integers into their respective joystick values ------------------------------------------------------------------------------
