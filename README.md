@@ -1,4 +1,4 @@
-# BB8-V.1-Controls
+# BB8-v1
 
 A program created to control a homemade BB-8 robot via Bluetooth. Signals will
 be inputed through a small joystick and transmitted over the two implemented
